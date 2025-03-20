@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +34,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TrafficLightScreen() {
-    var currentLight by remember { mutableStateOf(0) }
-    val lights = listOf(Color.Red, Color.Yellow, Color.Green)
+    val lights = listOf(Color.Green, Color.Yellow, Color.Red)
 
     Column(
         modifier = Modifier
@@ -46,23 +43,21 @@ fun TrafficLightScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        lights.forEachIndexed { index, color ->
-            Box(
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .background(if (index == currentLight) color else Color.Gray)
-                    .padding(8.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
-            onClick = { currentLight = (currentLight + 1) % 3 },
-            modifier = Modifier.padding(16.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("次の信号に進む")
+            lights.forEach { color ->
+                Box(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                )
+            }
         }
     }
 }
