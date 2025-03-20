@@ -7,14 +7,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vitantonio.nagauzzi.trafficlight.data.TrafficLightState
 import com.vitantonio.nagauzzi.trafficlight.domain.LightColor
-import com.vitantonio.nagauzzi.trafficlight.ui.components.TrafficLight
+import com.vitantonio.nagauzzi.trafficlight.ui.components.TrafficLightBox
 import kotlinx.coroutines.delay
 
 @Composable
@@ -39,29 +38,9 @@ fun TrafficLightScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // 緑信号
-            TrafficLight(
-                color = Color.Green,
-                isActive = state.activeLight is LightColor.Green
-            )
-            // 黄信号
-            TrafficLight(
-                color = Color.Yellow,
-                isActive = state.activeLight is LightColor.Yellow
-            )
-            // 赤信号
-            TrafficLight(
-                color = Color.Red,
-                isActive = state.activeLight is LightColor.Red
-            )
-        }
+        TrafficLightBox(
+            activeLight = state.activeLight
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
         
