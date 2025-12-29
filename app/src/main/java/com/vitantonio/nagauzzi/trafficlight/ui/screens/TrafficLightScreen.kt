@@ -11,26 +11,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vitantonio.nagauzzi.trafficlight.data.TrafficLightState
 import com.vitantonio.nagauzzi.trafficlight.domain.LightColor
 import com.vitantonio.nagauzzi.trafficlight.ui.components.TrafficLightBox
-import kotlinx.coroutines.delay
 
+// 信号機画面のComposable
+// ViewModelから状態を受け取り、UIを描画するのみ（ビジネスロジックなし）
 @Composable
-fun TrafficLightScreen() {
-    var state by remember { mutableStateOf(TrafficLightState(LightColor.Green)) }
-    var remainingSeconds by remember { mutableIntStateOf(state.activeLight.durationSeconds) }
+fun TrafficLightScreen(
+    viewModel: TrafficLightViewModel = viewModel()
+) {
+    // ViewModelからUI状態を収集（Lifecycle-aware）
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // 時間経過による信号の状態変化を管理
-    LaunchedEffect(state.activeLight) {
-        remainingSeconds = state.activeLight.durationSeconds
-        while (remainingSeconds > 0) {
-            delay(1000L)
-            remainingSeconds--
-        }
-        state = state.next()
-    }
+    TrafficLightContent(
+        trafficLightState = uiState.trafficLightState
+    )
+}
 
+// UI表示部分を分離（テストとプレビューが容易）
+@Composable
+private fun TrafficLightContent(
+    trafficLightState: TrafficLightState
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,13 +44,13 @@ fun TrafficLightScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         TrafficLightBox(
-            activeLight = state.activeLight
+            activeLight = trafficLightState.activeLight
         )
 
         Spacer(modifier = Modifier.height(24.dp))
-        
+
         Text(
-            text = "残り時間: ${remainingSeconds}秒",
+            text = "残り時間: ${trafficLightState.remainingSeconds}秒",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
@@ -61,7 +66,12 @@ fun TrafficLightScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            TrafficLightScreen()
+            TrafficLightContent(
+                trafficLightState = TrafficLightState(
+                    activeLight = LightColor.Green,
+                    remainingSeconds = 37
+                )
+            )
         }
     }
 }
