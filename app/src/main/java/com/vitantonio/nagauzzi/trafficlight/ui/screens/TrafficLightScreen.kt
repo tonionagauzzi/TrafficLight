@@ -33,7 +33,7 @@ fun TrafficLightScreen(
 
 // UI表示部分を分離（テストとプレビューが容易）
 @Composable
-private fun TrafficLightContent(
+fun TrafficLightContent(
     trafficLightState: TrafficLightState
 ) {
     Column(

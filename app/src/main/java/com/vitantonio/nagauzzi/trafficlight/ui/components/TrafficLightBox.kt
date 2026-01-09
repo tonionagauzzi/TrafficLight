@@ -36,19 +36,25 @@ fun TrafficLightBox(
             TrafficLight(
                 color = Color.Green,
                 isActive = activeLight is LightColor.Green,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                testTag = "light_green",
+                colorName = "緑"
             )
             Spacer(modifier = Modifier.width(16.dp))
             TrafficLight(
                 color = Color.Yellow,
                 isActive = activeLight is LightColor.Yellow,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                testTag = "light_yellow",
+                colorName = "黄"
             )
             Spacer(modifier = Modifier.width(16.dp))
             TrafficLight(
                 color = Color.Red,
                 isActive = activeLight is LightColor.Red,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                testTag = "light_red",
+                colorName = "赤"
             )
         }
     }
