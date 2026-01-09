@@ -1,3 +1,5 @@
+@file:Suppress("NonAsciiCharacters")
+
 package com.vitantonio.nagauzzi.trafficlight.ui.screens
 
 import androidx.compose.ui.test.assert
